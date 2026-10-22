@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MATH MINGLE</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Latar arena: lingkaran besar + bentuk melayang -->
+  <div class="arena" aria-hidden="true">
+    <i class="shape c"></i><i class="shape t"></i><i class="shape q"></i>
+  </div>
+
+  <!-- ============ MENU ============ -->
+  <main id="menu" class="screen active">
+    <h1 class="logo">MATH <span>MINGLE</span></h1>
+    <p class="sub">Hitung, Bergerak, dan Bentuk Kelompok!</p>
+
+    <section class="card settings">
+      <div class="group"><h3>Kelas</h3>
+        <div class="chips" data-key="grade">
+          <button class="chip on" data-v="1">Kelas 1</button>
+          <button class="chip" data-v="2">Kelas 2</button>
+          <button class="chip" data-v="3">Kelas 3</button>
+          <button class="chip" data-v="4">Kelas 4</button>
+          <button class="chip" data-v="5">Kelas 5</button>
+          <button class="chip" data-v="6">Kelas 6</button>
+        </div></div>
+      <div class="group"><h3>Operasi (boleh pilih lebih dari satu)</h3>
+        <div class="chips" data-key="ops" data-multi="1">
+          <button class="chip on" data-v="+">＋ Tambah</button>
+          <button class="chip" data-v="-">－ Kurang</button>
+          <button class="chip" data-v="×">× Kali</button>
+          <button class="chip" data-v="÷">÷ Bagi</button>
+        </div></div>
+      <div class="group"><h3>Jumlah ronde</h3>
+        <div class="chips" data-key="rounds">
+          <button class="chip on" data-v="5">5</button>
+          <button class="chip" data-v="10">10</button>
+          <button class="chip" data-v="15">15</button>
+        </div></div>
+      <div class="group"><h3>Waktu mingle (detik)</h3>
+        <div class="chips" data-key="mingle">
+          <button class="chip" data-v="10">10</button>
+          <button class="chip on" data-v="15">15</button>
+          <button class="chip" data-v="20">20</button>
+          <button class="chip" data-v="30">30</button>
+        </div></div>
+      <div class="group"><h3>Musik</h3>
+        <div class="chips" data-key="music">
+          <button class="chip on" data-v="1">🎵 Nyala</button>
+          <button class="chip" data-v="0">🔇 Mati</button>
+        </div></div>
+    </section>
+
+    <div class="row">
+      <button id="btnStart" class="btn big">MULAI PERMAINAN</button>
+      <button id="btnHow" class="btn green big">CARA BERMAIN</button>
+    </div>
+  </main>
+
+  <!-- ============ GAME ============ -->
+  <main id="game" class="screen">
+    <header class="topbar">
+      <div class="hud"><b id="roundInfo"></b><b id="scoreInfo"></b></div>
+      <div class="tools">
+        <button id="btnPause" class="tool" title="Jeda">⏸ Jeda</button>
+        <button id="btnMute" class="tool" title="Suara">🔊 Suara</button>
+        <button id="btnFull" class="tool" title="Layar penuh">⛶ Layar penuh</button>
+        <button id="btnRestart" class="tool" title="Mulai ulang">↻ Ulang</button>
+        <button id="btnMenu" class="tool" title="Menu">⌂ Menu</button>
+      </div>
+    </header>
+
+    <section class="stage">
+      <!-- Fase 1: musik -->
+      <div id="p-music" class="phase">
+        <h2>AYO BERGERAK DAN CARI TEMAN!</h2>
+        <div id="kids" class="kids"></div>
+        <p class="note">Yang belum dapat kelompok: tenang, bergabung lagi di ronde berikutnya!</p>
+        <button id="btnStopMusic" class="btn big">⏹ STOP MUSIK &amp; MULAI SOAL</button>
+      </div>
+
+      <!-- Fase 2+3: soal + hitung mundur langsung jalan -->
+      <div id="p-mingle" class="phase">
+        <p class="instr">HITUNG JAWABANNYA, LALU CARI TEMAN DAN BENTUK KELOMPOK SESUAI JAWABAN!</p>
+        <div id="qMini" class="bigq"></div>
+        <div id="count" class="count"></div>
+      </div>
+
+      <!-- Fase 4: pengecekan guru -->
+      <div id="p-check" class="phase">
+        <h2 class="alert">WAKTU HABIS! BERHENTI DAN CEK KELOMPOK!</h2>
+        <div class="card checkcard">
+          <p class="label">Soal</p><p id="qCheck" class="ans"></p>
+          <p class="label">Jawaban</p><p id="sizeCheck" class="ans"></p>
+          <p class="note">Jumlah anak tidak pas dibagi? Guru boleh membuat satu kelompok sisa atau menyesuaikan jumlah peserta.</p>
+        </div>
+        <div class="row">
+          <button id="btnOk" class="btn green big">✔ KELOMPOK SUDAH BENAR</button>
+          <button id="btnRepeat" class="btn black big">↺ ULANGI HITUNG MUNDUR</button>
+          <button id="btnNext" class="btn big">➜ SOAL BERIKUTNYA</button>
+        </div>
+      </div>
+    </section>
+
+    <div id="pauseOv" class="overlay" hidden>
+      <div class="card"><h2>⏸ DIJEDA</h2>
+        <button id="btnResume" class="btn green big">▶ LANJUT</button></div>
+    </div>
+  </main>
+
+  <!-- ============ AKHIR ============ -->
+  <main id="end" class="screen">
+    <h1 class="final">HEBAT! KALIAN SUDAH MENYELESAIKAN MATH MINGLE!</h1>
+    <section class="stats" id="finalStats"></section>
+    <div class="row">
+      <button id="btnAgain" class="btn big">MAIN LAGI</button>
+      <button id="btnBack" class="btn green big">KEMBALI KE MENU</button>
+    </div>
+  </main>
+
+  <!-- ============ CARA BERMAIN ============ -->
+  <div id="howOv" class="overlay" hidden>
+    <div class="card how">
+      <h2>CARA BERMAIN</h2>
+      <ol>
+        <li>Musik main. Anak-anak <b>bergerak</b> di area yang ditentukan guru.</li>
+        <li>Guru menekan <b>STOP MUSIK</b>. Soal muncul dan <b>hitung mundur langsung jalan</b>.</li>
+        <li>Anak-anak menghitung jawabannya. Jawaban = <b>jumlah anak dalam satu kelompok</b>. Contoh: 2 + 2 = 4 → kelompok 4 anak.</li>
+        <li>Sambil menghitung, anak-anak <b>mencari teman</b> dan membentuk kelompok.</li>
+        <li>Waktu habis: <b>jawaban ditampilkan</b>. Guru mengecek kelompok dan memilih tombol berikutnya.</li>
+      </ol>
+      <p class="note">Tidak ada anak yang dikeluarkan. Yang belum dapat kelompok bergabung di ronde berikutnya.</p>
+      <button id="btnCloseHow" class="btn big">MENGERTI!</button>
+    </div>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
